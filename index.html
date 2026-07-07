@@ -454,358 +454,119 @@ const ITEMS = [
 
 /* ============================== SPRITES ============================== */
 const PAL = {
-  X:"#0d0d15",                                        // outline
-  D:"#d8fff9", C:"#84efe1", c:"#40cdba", e:"#23887c", // diamond hi/lt/mid/shadow
-  W:"#c69256", w:"#8a5732", v:"#503320",              // wood handle
-  I:"#f3f6fb", i:"#c8cfda", j:"#8b93a2", J:"#5a6270", // iron / steel
-  O:"#ffe488", o:"#ecb63f", y:"#a9761d",              // gold
-  s:"#edeff5", S:"#aab0c0",                           // string / bowstring
-  G:"#eaffb4", g:"#95f13a", h:"#57ba1e", H:"#318014", // xp orb greens
-  T:"#aef3de", t:"#42c2a1", u:"#227e6b",              // trident teal
-  P:"#5c3cae", p:"#402879", q:"#bd92ff", n:"#f3e9c9", N:"#d6c592", // book
-  m:"#d0d5e1", M:"#99a0b2", k:"#6b7284",              // elytra membrane
-  r:"#e5443a", R:"#a8281f",                           // red accents
+  X:"#0b0b12",                                        // outline
+  D:"#ecfffb", C:"#a6f2e6", c:"#54d3c2", e:"#2ba192", // diamond hi/lt/mid/shadow
+  W:"#cb9c66", w:"#93643a", v:"#5d3b22",              // wood handle
+  I:"#f5f8fd", i:"#cfd6e1", j:"#8f97a5", J:"#59616f", // iron / steel
+  O:"#ffe79a", o:"#eeb63f", y:"#a9761d",              // gold
+  s:"#eceef4", S:"#a9aebd",                           // string / bowstring
+  G:"#ecffbe", g:"#93ec3f", h:"#57b81e",              // xp orb greens
+  T:"#b8f6e2", t:"#43c2a0", u:"#217e6a",              // trident teal
+  P:"#7250c8", p:"#482e88", b:"#301c5f", q:"#cda6ff", // book cover + rune
+  n:"#f4ead0", N:"#d9ca9c",                           // book pages
+  m:"#dbe0ea", M:"#a3aabc", l:"#6f7688", k:"#565c6c", // elytra membrane
+  r:"#ec4d42", R:"#b02b22",                           // red accents
 };
-const SPRITES = {
-sword:[
-"................",
-"............XX..",
-"...........XDCX.",
-"..........XDCcX.",
-".........XDCceX.",
-"........XDCceX..",
-".......XDCceX...",
-"......XDCceX....",
-".....XDCceX.....",
-"....XDCceX......",
-"...XDCCcceX.....",
-"...XWwvX........",
-"..XWwvX.........",
-".XWwX...........",
-".XvX............",
-"................"],
-pickaxe:[
-"................",
-"....XX....XXX...",
-"...XDCX..XCcX...",
-"...XDCcXXCcceX..",
-"....XeccccceXX..",
-".....XXXXXWwX...",
-"........XWwX....",
-".......XWwX.....",
-"......XWwX......",
-".....XWwX.......",
-"....XWwX........",
-"...XWwX.........",
-"..XWwX..........",
-".XWX............",
-".XX.............",
-"................"],
-axe:[
-"................",
-".....XXXX.......",
-"....XDCCcX......",
-"...XDCcccX......",
-"...XDCcccXX.....",
-"...XDCccceXWX...",
-"...XDCcceXWwX...",
-"....XeeeXWwX....",
-".....XXXWwX.....",
-"......XWwX......",
-".....XWwX.......",
-"....XWwX........",
-"...XWwX.........",
-"..XWwX..........",
-".XWX............",
-".XX............."],
-shovel:[
-"................",
-".........XXXXX..",
-".........XDCcX..",
-".........XDCeX..",
-".........XCceX..",
-".........XeceX..",
-"........XWwX....",
-".......XWwX.....",
-"......XWwX......",
-".....XWwX.......",
-"....XWwX........",
-"...XWwX.........",
-"..XWwX..........",
-".XWX............",
-".XX.............",
-"................"],
-hoe:[
-"................",
-"........XXXX....",
-".......XDCceX...",
-".......XeXXeX...",
-".......XX.XWX...",
-"........XWwX....",
-".......XWwX.....",
-"......XWwX......",
-".....XWwX.......",
-"....XWwX........",
-"...XWwX.........",
-"..XWwX..........",
-".XWX............",
-".XX.............",
-"................",
-"................"],
-bow:[
-"................",
-".......XXXX.....",
-"......XWWwvX....",
-".....XWwX.sX....",
-"....XWwX..sX....",
-"...XWwX...sX....",
-"...XwX....sX....",
-"...XwX....sX....",
-"...XwX....sX....",
-"...XWwX...sX....",
-"....XWwX..sX....",
-".....XWwX.sX....",
-"......XWWwvX....",
-".......XXXX.....",
-"................",
-"................"],
-crossbow:[
-"................",
-"..X.........X...",
-".XwX.......XwX..",
-".XwXsssssssXwX..",
-".XwwX.....XwwX..",
-"..XwXXXXXXXwX...",
-"...XIIIIIIIX....",
-"....XwwwwwX.....",
-".....XwwwX......",
-".....XwwX.......",
-"......XwX.......",
-"......XwX.......",
-"......XvX.......",
-"......XXX.......",
-"................",
-"................"],
-trident:[
-"................",
-".XTX.XTX.XTX....",
-".XtX.XtX.XtX....",
-".XtX.XtX.XtX....",
-".XtXXXtXXXtX....",
-"..XttttttttX....",
-"...XtuuutX......",
-"....XTtX........",
-".....XtX........",
-".....XtX........",
-".....XtX........",
-".....XtX........",
-".....XtX........",
-".....XuX........",
-".....XXX........",
-"................"],
-mace:[
-"................",
-"....XXXXXX......",
-"...XIIiiiJX.....",
-"..XIiijjjJX.....",
-"..XiijjjjJX.....",
-"..XijjjjJJX.....",
-"...XJjjjJX......",
-"....XwwwX.......",
-"....XWwvX.......",
-"....XWwvX.......",
-".....XwvX.......",
-".....XWwX.......",
-".....XWwX.......",
-".....XvvX.......",
-".....XXXX.......",
-"................"],
-helmet:[
-"................",
-"...XXXXXXXX.....",
-"..XDCCCCCCeX....",
-".XDCcccccceX....",
-".XCccccccceeX...",
-".XCcccccccceX...",
-".XCcXXXXXXcceX..",
-".XCX......XceX..",
-".XXX......XXX...",
-"................",
-"................",
-"................",
-"................",
-"................",
-"................",
-"................"],
-chestplate:[
-"................",
-".XXXX....XXXX...",
-".XDCcX..XDCcX...",
-".XCcceXXCccceX..",
-"..XCccccccccX...",
-"..XCcccccccceX..",
-"..XCccccccceeX..",
-"..XCcccccccceX..",
-"...XCcccccceX...",
-"...XCcccccceX...",
-"...XeecccceeX...",
-"....XXXXXXXX....",
-"................",
-"................",
-"................",
-"................"],
-leggings:[
-"................",
-"...XXXXXXXX.....",
-"..XDCccccceX....",
-"..XCcccccceX....",
-"..XCcccccceX....",
-"..XCcXXXcceX....",
-"..XCcX.XcceX....",
-"..XCcX.XcceX....",
-"..XCcX.XcceX....",
-"..XCcX.XcceX....",
-"..XCcX.XcceX....",
-"..XeeX.XeeeX....",
-"..XXX...XXX.....",
-"................",
-"................",
-"................"],
-boots:[
-"................",
-"................",
-"...XXX....XXX...",
-"..XDCcX..XDCcX..",
-"..XCceX..XCceX..",
-"..XCceX..XCceX..",
-"XXXCceX.XXCceX..",
-"XDCcceX.XDCceX..",
-"XeecceX.XeeceX..",
-"XXXXXXX.XXXXXX..",
-"................",
-"................",
-"................",
-"................",
-"................",
-"................"],
-elytra:[
-"................",
-"................",
-"......XXXX......",
-".....XMmmMX.....",
-"....XMmXXmMX....",
-"...XMmX..XmMX...",
-"..XMmX....XmMX..",
-"..XmX......XmX..",
-".XMmX......XmMX.",
-".XmX........XmX.",
-".XkX........XkX.",
-".XkX........XkX.",
-".XkkX......XkkX.",
-"..XX........XX..",
-"................",
-"................"],
-fishing_rod:[
-"................",
-"............XXX.",
-"...........XWwX.",
-"..........XWwX..",
-".........XWwXs..",
-"........XWwX.s..",
-".......XWwX..s..",
-"......XWwX...s..",
-".....XWwX....s..",
-"....XvvX.....s..",
-"...XX........s..",
-".............rr.",
-".............rR.",
-"................",
-"................",
-"................"],
-shield:[
-"................",
-".XXXXXXXXXXX....",
-".XWWWWWWWWWX....",
-".XWiiiiiiiWX....",
-".XWiIIIIiiWX....",
-".XWiIrrIiiWX....",
-".XWiIrrIiiWX....",
-".XWiIIIIiiWX....",
-".XWiiiiiiiWX....",
-".XWWWWWWWWWX....",
-"..XWWWWWWWX.....",
-"...XWWWWWX......",
-"....XWWWX.......",
-".....XWX........",
-"......X.........",
-"................"],
-book:[
-"................",
-"...XXXXXXXX.....",
-"..XPPPPPPPpX....",
-"..XPnnnnnNpX....",
-"..XPnqnnqNpX....",
-"..XPnnnnnNpX....",
-"..XPnqnnnNpX....",
-"..XPnnnqnNpX....",
-"..XPnnnnnNpX....",
-"..XPPPPPPPpX....",
-"..XoOooooooX....",
-"...XXXXXXXX.....",
-".q............q.",
-"................",
-"................",
-"................"],
-anvil:[
-"................",
-"...XXXXXXXXXX...",
-"..XIIIIIIIIIIX..",
-"..XiiiiiiiiiiX..",
-"...XJJJJJJJJX...",
-".....XJJJJX.....",
-".....XjjjjX.....",
-"....XjjjjjjX....",
-"...XiiiiiiiiX...",
-"..XIIIIIIIIIIX..",
-"..XJJJJJJJJJJX..",
-"...XXXXXXXXXX...",
-"................",
-"................",
-"................",
-"................"],
-orb:[
-"................",
-"................",
-".....XXXX.......",
-"....XGGggX......",
-"...XGGgggX......",
-"...XGgggghX.....",
-"...XgggghhX.....",
-"...XgghhhHX.....",
-"....XhhhHX......",
-".....XHHX.......",
-"................",
-"................",
-"................",
-"................",
-"................",
-"................"],
-};
+
+/* ============================================================
+   Procedural icon generator — original 32x32 pixel art in the
+   Minecraft style. Each item is drawn from primitives in flat
+   "material" colors, then a light-from-top-left shading pass adds
+   highlight/shadow tiers and an outline pass rims every shape.
+   ============================================================ */
+const ICON = (function(){
+  const N = 32;
+  const grid = () => Array.from({length:N}, () => new Array(N).fill("."));
+  const inb = (x,y) => x>=0 && x<N && y>=0 && y<N;
+  const put = (G,x,y,c) => { x=Math.round(x); y=Math.round(y); if(inb(x,y)) G[y][x]=c; };
+  const rect = (G,x,y,w,h,c) => { for(let j=0;j<h;j++) for(let i=0;i<w;i++) put(G,x+i,y+j,c); };
+  const disc = (G,cx,cy,r,c) => { const r2=r*r;
+    for(let y=Math.floor(cy-r); y<=Math.ceil(cy+r); y++)
+      for(let x=Math.floor(cx-r); x<=Math.ceil(cx+r); x++){
+        const dx=x-cx, dy=y-cy; if(dx*dx+dy*dy<=r2) put(G,x,y,c);
+      } };
+  const line = (G,x0,y0,x1,y1,r,c) => {
+    const st = Math.ceil(Math.max(Math.abs(x1-x0), Math.abs(y1-y0)))*2 + 1;
+    for(let s=0;s<=st;s++){ const t=s/st; disc(G, x0+(x1-x0)*t, y0+(y1-y0)*t, r, c); } };
+  const tri = (G,ax,ay,bx,by,cx,cy,c) => {
+    const e=(px,py,x1,y1,x2,y2)=>(px-x1)*(y2-y1)-(py-y1)*(x2-x1);
+    const mnY=Math.floor(Math.min(ay,by,cy)), mxY=Math.ceil(Math.max(ay,by,cy));
+    const mnX=Math.floor(Math.min(ax,bx,cx)), mxX=Math.ceil(Math.max(ax,bx,cx));
+    for(let y=mnY;y<=mxY;y++) for(let x=mnX;x<=mxX;x++){
+      const d1=e(x+.5,y+.5,ax,ay,bx,by), d2=e(x+.5,y+.5,bx,by,cx,cy), d3=e(x+.5,y+.5,cx,cy,ax,ay);
+      if(!((d1<0||d2<0||d3<0) && (d1>0||d2>0||d3>0))) put(G,x,y,c);
+    } };
+  const TIER = {
+    c:{lt:"C",dk:"e",hl:"D"}, w:{lt:"W",dk:"v",hl:"W"}, j:{lt:"i",dk:"J",hl:"I"},
+    g:{lt:"G",dk:"h",hl:"G"}, t:{lt:"T",dk:"u",hl:"T"}, p:{lt:"P",dk:"b",hl:"P"},
+    M:{lt:"m",dk:"l",hl:"m"}, o:{lt:"O",dk:"y",hl:"O"}, s:{lt:"s",dk:"S",hl:"s"},
+    r:{lt:"r",dk:"R",hl:"r"}, n:{lt:"n",dk:"N",hl:"n"}
+  };
+  const shade = (G) => {
+    const B = G.map(r=>r.slice());
+    const emp = (x,y) => !inb(x,y) || B[y][x]===".";
+    for(let y=0;y<N;y++) for(let x=0;x<N;x++){
+      const t = TIER[B[y][x]]; if(!t) continue;
+      const up=emp(x,y-1), lf=emp(x-1,y), dn=emp(x,y+1), rt=emp(x+1,y);
+      if(up&&lf) G[y][x]=t.hl; else if(up||lf) G[y][x]=t.lt; else if(dn||rt) G[y][x]=t.dk;
+    } };
+  const outline = (G) => {
+    const B = G.map(r=>r.slice());
+    const fl = (x,y) => inb(x,y) && B[y][x]!==".";
+    for(let y=0;y<N;y++) for(let x=0;x<N;x++){
+      if(B[y][x]!==".") continue;
+      if(fl(x-1,y)||fl(x+1,y)||fl(x,y-1)||fl(x,y+1)||fl(x-1,y-1)||fl(x+1,y-1)||fl(x-1,y+1)||fl(x+1,y+1)) G[y][x]="X";
+    } };
+  const DRAW = {
+    sword(G){ line(G,7,27,13,20,1.8,"w"); disc(G,6.5,27,1.8,"w");
+      line(G,9,17,14,23,1.3,"o"); line(G,13,20,27,5,2.4,"c"); },
+    pickaxe(G){ line(G,16,10,16,28,1.6,"w"); line(G,4,13,16,7,2.1,"c"); line(G,28,13,16,7,2.1,"c"); },
+    axe(G){ line(G,19,28,12,11,1.8,"w"); tri(G,14,4,4,11,14,18,"c"); rect(G,12,7,4,11,"c"); },
+    shovel(G){ line(G,19,28,13,11,1.8,"w"); rect(G,9,3,9,8,"c"); disc(G,13.5,11,4.4,"c"); },
+    hoe(G){ line(G,20,28,12,10,1.8,"w"); rect(G,6,5,13,3,"c"); rect(G,6,8,3,4,"c"); },
+    bow(G){ rect(G,8,4,1,24,"s"); line(G,9,4,21,10,1.9,"w"); line(G,21,10,23,16,1.9,"w");
+      line(G,23,16,21,22,1.9,"w"); line(G,21,22,9,28,1.9,"w"); },
+    crossbow(G){ rect(G,3,7,2,13,"w"); rect(G,27,7,2,13,"w"); rect(G,4,8,24,1,"s");
+      rect(G,13,12,7,4,"j"); line(G,16,15,16,26,1.5,"w"); rect(G,14,20,6,2,"j"); },
+    trident(G){ line(G,16,29,16,11,1.5,"t"); rect(G,8,10,16,2,"t");
+      rect(G,8,3,2,8,"t"); rect(G,15,3,2,8,"t"); rect(G,22,3,2,8,"t"); },
+    mace(G){ line(G,16,29,16,13,1.6,"w"); disc(G,16,9,6.5,"j"); rect(G,10,9,12,4,"j"); },
+    fishing_rod(G){ line(G,4,27,24,7,1.5,"w"); rect(G,24,7,1,18,"s"); disc(G,24,26,2,"r"); },
+    shield(G){ rect(G,6,4,20,13,"w");
+      for(let y=17;y<=29;y++){ const hw=Math.round(10*(29-y)/12); rect(G,16-hw,y,2*hw+1,1,"w"); }
+      rect(G,10,8,12,9,"j"); disc(G,16,12,2.5,"r"); },
+    elytra(G){ rect(G,14,4,4,13,"k"); tri(G,14,5,3,13,10,26,"M"); line(G,3,13,9,25,3,"M");
+      tri(G,18,5,29,13,22,26,"M"); line(G,29,13,23,25,3,"M"); },
+    helmet(G){ disc(G,16,13,9,"c"); rect(G,7,13,18,6,"c"); rect(G,10,14,5,6,"."); rect(G,17,14,5,6,"."); },
+    chestplate(G){ rect(G,8,8,16,17,"c"); rect(G,4,8,6,6,"c"); rect(G,22,8,6,6,"c"); rect(G,13,6,6,3,"."); },
+    leggings(G){ rect(G,8,6,16,6,"c"); rect(G,8,12,6,14,"c"); rect(G,18,12,6,14,"c"); },
+    boots(G){ rect(G,5,10,7,10,"c"); rect(G,3,17,3,4,"c"); rect(G,20,10,7,10,"c"); rect(G,26,17,3,4,"c"); },
+    book(G){ rect(G,7,5,18,22,"p"); rect(G,10,7,13,18,"n"); rect(G,7,5,3,22,"p"); rect(G,9,14,14,2,"o");
+      put(G,13,10,"q"); put(G,18,12,"q"); put(G,13,19,"q"); put(G,19,21,"q"); put(G,16,23,"q"); },
+    orb(G){ disc(G,16,16,8,"g"); },
+    anvil(G){ rect(G,7,6,18,4,"j"); rect(G,11,10,10,3,"j"); rect(G,13,13,6,4,"j"); rect(G,9,17,14,3,"j"); rect(G,8,20,16,4,"j"); }
+  };
+  const out = {};
+  for(const k in DRAW){ const G = grid(); DRAW[k](G); shade(G); outline(G); out[k] = G.map(r=>r.join("")); }
+  return out;
+})();
+const SPRITES = ICON;
 function spriteSVG(name, size){
   const g = SPRITES[name]; if (!g) return "";
+  const H = g.length, Wd = g[0].length;
   let rects = "";
-  for (let y = 0; y < 16; y++){
+  for (let y = 0; y < H; y++){
     const row = g[y] || ""; let x = 0;
-    while (x < 16){
+    while (x < Wd){
       const ch = row[x];
       if (!ch || ch === "."){ x++; continue; }
       let x2 = x + 1;
-      while (x2 < 16 && row[x2] === ch) x2++;
+      while (x2 < Wd && row[x2] === ch) x2++;
       rects += '<rect x="'+x+'" y="'+y+'" width="'+(x2-x)+'" height="1" fill="'+(PAL[ch]||"#f0f")+'"/>';
       x = x2;
     }
   }
-  return '<svg class="spr" viewBox="0 0 16 16" width="'+size+'" height="'+size+'" shape-rendering="crispEdges" aria-hidden="true">'+rects+'</svg>';
+  return '<svg class="spr" viewBox="0 0 '+Wd+' '+H+'" width="'+size+'" height="'+size+'" shape-rendering="crispEdges" aria-hidden="true">'+rects+'</svg>';
 }
 
 /* ============================== SOLVER ============================== */
@@ -1247,9 +1008,11 @@ renderItemGrid(); renderEnchList(); renderOpts(); renderResults();
 /* dev hooks for testing */
 window.EnchCalc = { solve, xpPoints, pen, E, ITEMS, SPRITES };
 (function devCheck(){
-  for (const k in SPRITES) SPRITES[k].forEach((r, i) => {
-    if (r.length !== 16) console.error("sprite row length", k, i, r.length);
-  });
+  for (const k in SPRITES){ const w = SPRITES[k][0].length;
+    SPRITES[k].forEach((r, i) => {
+      if (r.length !== w) console.error("sprite row length", k, i, r.length, "expected", w);
+    });
+  }
 })();
 </script>
 </body>
