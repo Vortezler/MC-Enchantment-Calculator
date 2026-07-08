@@ -570,16 +570,14 @@ function spriteSVG(name, size){
   return '<svg class="spr" viewBox="0 0 '+Wd+' '+H+'" width="'+size+'" height="'+size+'" shape-rendering="crispEdges" aria-hidden="true">'+rects+'</svg>';
 }
 
-/* Optional local texture pack (see assets/, kept out of git). When a texture
-   file is present it is used; otherwise this silently falls back to the
-   generated pixel-art icon above, so the deployed site always renders. */
-const TEX_BASE = "assets/item-textures/items/";
+/* CC0 item icons (assets/cc0-icons/, committed & public-domain). Items with a
+   matching icon file use it; everything else silently falls back to the
+   generated pixel-art icon above, so the grid always renders. Filenames match
+   item ids. See assets/cc0-icons/README.txt for the source and license. */
+const TEX_BASE = "assets/cc0-icons/";
 const TEX = {
-  sword:"diamond_sword", pickaxe:"diamond_pickaxe", axe:"diamond_axe",
-  shovel:"diamond_shovel", hoe:"diamond_hoe", helmet:"diamond_helmet",
-  chestplate:"diamond_chestplate", leggings:"diamond_leggings", boots:"diamond_boots",
-  bow:"bow", crossbow:"crossbow_standby", trident:"trident", mace:"mace",
-  fishing_rod:"fishing_rod", elytra:"elytra", book:"enchanted_book"
+  sword:"sword", axe:"axe", mace:"mace", bow:"bow", trident:"trident",
+  book:"book", helmet:"helmet", chestplate:"chestplate", leggings:"leggings", boots:"boots"
 };
 function iconHTML(name, size){
   const svg = spriteSVG(name, size);
