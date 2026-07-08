@@ -107,6 +107,7 @@ main{display:grid; grid-template-columns:minmax(430px,500px) 1fr; gap:18px; alig
   display:flex; align-items:center; justify-content:center; position:relative; flex:none;
 }
 .slot .spr{image-rendering:pixelated}
+.tex{image-rendering:pixelated; display:block; object-fit:contain}
 .slot.glint::after{
   content:""; position:absolute; inset:2px; pointer-events:none; mix-blend-mode:screen;
   background:linear-gradient(115deg, transparent 32%, rgba(190,120,255,.42) 45%, rgba(120,200,255,.30) 55%, transparent 68%);
@@ -569,6 +570,28 @@ function spriteSVG(name, size){
   return '<svg class="spr" viewBox="0 0 '+Wd+' '+H+'" width="'+size+'" height="'+size+'" shape-rendering="crispEdges" aria-hidden="true">'+rects+'</svg>';
 }
 
+/* Optional local texture pack (see assets/, kept out of git). When a texture
+   file is present it is used; otherwise this silently falls back to the
+   generated pixel-art icon above, so the deployed site always renders. */
+const TEX_BASE = "assets/item-textures/items/";
+const TEX = {
+  sword:"diamond_sword", pickaxe:"diamond_pickaxe", axe:"diamond_axe",
+  shovel:"diamond_shovel", hoe:"diamond_hoe", helmet:"diamond_helmet",
+  chestplate:"diamond_chestplate", leggings:"diamond_leggings", boots:"diamond_boots",
+  bow:"bow", crossbow:"crossbow_standby", trident:"trident", mace:"mace",
+  fishing_rod:"fishing_rod", elytra:"elytra", book:"enchanted_book"
+};
+function iconHTML(name, size){
+  const svg = spriteSVG(name, size);
+  const tex = TEX[name];
+  if (!tex) return svg;
+  const px = size + "px";
+  return '<img class="tex" src="'+TEX_BASE+tex+'.png" width="'+size+'" height="'+size+'"'+
+    ' alt="" style="width:'+px+';height:'+px+'"'+
+    ' onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'\'">'+
+    '<span class="texfb" style="display:none">'+svg+'</span>';
+}
+
 /* ============================== SOLVER ============================== */
 const xpPoints = l => l <= 0 ? 0 : l <= 16 ? l*l + 6*l : l <= 31 ? 2.5*l*l - 40.5*l + 360 : 4.5*l*l - 162.5*l + 2220;
 const pen = u => Math.pow(2, u) - 1;
@@ -718,7 +741,7 @@ function applyPreset(rerender = true){
 function renderItemGrid(){
   $("#itemGrid").innerHTML = availItems(S.ver).map(it =>
     '<button class="itembtn'+(it.id===S.item?" on":"")+'" data-item="'+it.id+'" title="'+it.tip+'" aria-pressed="'+(it.id===S.item)+'">'+
-      '<span class="box">'+spriteSVG(it.id,40)+'</span><span>'+it.n+'</span></button>'
+      '<span class="box">'+iconHTML(it.id,40)+'</span><span>'+it.n+'</span></button>'
   ).join("");
 }
 document.addEventListener("click", e => {
@@ -807,7 +830,7 @@ function cellHTML(kind, mask, books, opts){
   const glint = isItem ? (mask !== 0 || S.prior > 0) : true;
   const single = !isItem && (mask & (mask - 1)) === 0;
   const name = isItem ? '<span class="t">'+it.tip+"</span>" : (single ? "Book" : "Combined Book");
-  return '<div class="cell"><div class="slot'+(glint?" glint":"")+'">'+spriteSVG(sprite,44)+"</div>"+
+  return '<div class="cell"><div class="slot'+(glint?" glint":"")+'">'+iconHTML(sprite,44)+"</div>"+
     '<div class="nm">'+name+(opts && opts.pwp !== undefined ? ' <span class="pwp">penalty +'+opts.pwp+" lv</span>" : "")+"</div>"+
     '<div>'+maskLines(mask, books, opts && opts.maxLines)+"</div></div>";
 }
@@ -817,7 +840,7 @@ function renderResults(){
   const it = currentItem();
   if (!books.length){
     el.innerHTML = '<div class="res-head"><span class="p-title">Cheapest order</span></div>'+
-      '<div class="empty"><div class="slot glint" style="width:76px;height:76px">'+spriteSVG("book",60)+"</div>"+
+      '<div class="empty"><div class="slot glint" style="width:76px;height:76px">'+iconHTML("book",60)+"</div>"+
       "<div>Pick an item and some enchantments —<br>the cheapest anvil order appears here.</div></div>";
     return;
   }
@@ -993,7 +1016,7 @@ function queueSolve(){ clearTimeout(solveTimer); solveTimer = setTimeout(renderR
 })();
 
 /* ---- boot ---- */
-$("#headSlot").innerHTML = spriteSVG("book", 44);
+$("#headSlot").innerHTML = iconHTML("book", 44);
 $("#verSel").innerHTML = VERSIONS.map(v => '<option value="'+v.id+'">'+v.label+"</option>").join("");
 $("#verSel").value = String(S.ver);
 $("#verSel").addEventListener("change", e => {

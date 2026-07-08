@@ -1,1 +1,6 @@
 .vercel
+
+# Local Minecraft item texture pack — Mojang's copyrighted art.
+# Used locally as item icons; not redistributed. The app falls back to
+# its own generated pixel-art icons when these files aren't present.
+assets/
