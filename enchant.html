@@ -195,11 +195,17 @@ main{display:grid; grid-template-columns:minmax(430px,500px) 1fr; gap:18px; alig
 .checkbox{display:flex; align-items:center; gap:9px; cursor:pointer}
 .checkbox .box{width:20px; height:20px; background:var(--slot); box-shadow:var(--bev-in);
   display:flex; align-items:center; justify-content:center; color:var(--xp); font-weight:bold}
-select{
-  background:var(--panel2); color:var(--ink); border:0; box-shadow:var(--bev-in);
-  font-family:var(--mono); font-size:13px; padding:9px 12px; cursor:pointer;
+.pickwrap{position:relative; display:inline-flex}
+.pxselect{
+  background:var(--panel2); color:var(--ink); border:0; box-shadow:var(--bev-out);
+  font-family:var(--mono); font-size:13px; font-weight:bold; letter-spacing:.2px;
+  padding:9px 30px 9px 12px; cursor:pointer; -webkit-appearance:none; appearance:none;
 }
-select option{background:#141019; color:var(--ink)}
+.pxselect:hover{background:#2a2140; color:var(--gold)}
+.pxselect:focus-visible{outline:2px dashed var(--glint); outline-offset:2px}
+.pxselect option{background:#141019; color:var(--ink); font-weight:normal; padding:8px}
+.pickwrap::after{content:"▾"; position:absolute; right:11px; top:50%; transform:translateY(-50%);
+  color:var(--gold); pointer-events:none; font-size:12px}
 .opthint{width:100%; color:var(--faint); font-size:11px; margin-top:2px}
 
 /* ---------- results ---------- */
@@ -322,7 +328,7 @@ a{color:var(--glint)}
       </div>
       <div class="optrow">
         <span class="optlabel">Item’s prior anvil uses</span>
-        <select id="priorSel" aria-label="Prior anvil uses on the item">
+        <span class="pickwrap"><select id="priorSel" class="pxselect" aria-label="Prior anvil uses on the item">
           <option value="0">0 — fresh (+0 lv)</option>
           <option value="1">1 (+1 lv)</option>
           <option value="2">2 (+3 lv)</option>
@@ -330,7 +336,7 @@ a{color:var(--glint)}
           <option value="4">4 (+15 lv)</option>
           <option value="5">5 (+31 lv)</option>
           <option value="6">6 (+63 lv)</option>
-        </select>
+        </select></span>
       </div>
     </div>
   </section>

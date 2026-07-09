@@ -64,13 +64,22 @@ header{display:flex; align-items:center; gap:16px; margin-bottom:24px; flex-wrap
 
 label.fld{display:flex; flex-direction:column; gap:7px; font-family:var(--px); font-size:9px;
   letter-spacing:1px; color:var(--dim)}
-input, select{font-family:var(--mono); font-size:14px; color:var(--ink); background:var(--slot);
+input{font-family:var(--mono); font-size:14px; color:var(--ink); background:var(--slot);
   border:0; box-shadow:var(--bev-in); padding:11px 12px; width:100%}
-input:focus, select:focus{outline:2px solid var(--glint); outline-offset:-2px}
-select{cursor:pointer; -webkit-appearance:none; appearance:none;
-  background-image:linear-gradient(45deg,transparent 50%,var(--glint) 50%),linear-gradient(135deg,var(--glint) 50%,transparent 50%);
-  background-position:calc(100% - 15px) 18px, calc(100% - 10px) 18px; background-size:5px 5px,5px 5px; background-repeat:no-repeat; padding-right:30px}
+input:focus{outline:2px solid var(--glint); outline-offset:-2px}
 #seed{font-size:16px; font-weight:bold; letter-spacing:.5px}
+
+.pickwrap{position:relative; display:block}
+select{
+  font-family:var(--mono); font-size:14px; font-weight:bold; letter-spacing:.2px; color:var(--ink);
+  background:var(--panel2); border:0; box-shadow:var(--bev-out); padding:11px 34px 11px 12px;
+  width:100%; cursor:pointer; -webkit-appearance:none; appearance:none;
+}
+select:hover{background:#173a28; color:var(--glint)}
+select:focus-visible{outline:2px dashed var(--glint); outline-offset:2px}
+select option{background:#0e1c14; color:var(--ink); font-weight:normal; padding:8px}
+.pickwrap::after{content:"▾"; position:absolute; right:12px; top:50%; transform:translateY(-50%);
+  color:var(--glint); pointer-events:none; font-size:13px}
 
 .grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
 .grid3{display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:12px}
@@ -145,7 +154,7 @@ a{color:var(--glint)}
       </div>
     </div>
     <label class="fld">VERSION
-      <select id="version" aria-label="Game version"></select>
+      <span class="pickwrap"><select id="version" aria-label="Game version"></select></span>
     </label>
   </div>
 </div>
