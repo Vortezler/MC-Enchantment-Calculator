@@ -156,7 +156,9 @@ a{color:var(--glint)}
   </div>
 
   <div class="panel">
-    <div class="p-head"><span class="p-title" id="inTitle">Overworld coordinates</span></div>
+    <div class="p-head"><span class="p-title" id="inTitle">Overworld coordinates</span>
+      <button class="pxbtn" id="clearBtn" type="button" style="margin-left:auto">CLEAR</button>
+    </div>
     <div class="coords">
       <label class="ax x">X <span class="axhint">east / west</span>
         <input id="ix" type="number" inputmode="numeric" step="1" placeholder="0" aria-label="X coordinate"></label>
@@ -286,6 +288,11 @@ $("#dO2N").addEventListener("click", () => setDir("o2n"));
 $("#dN2O").addEventListener("click", () => setDir("n2o"));
 ["ix","iy","iz"].forEach(id => $("#"+id).addEventListener("input", update));
 $("#copyBtn").addEventListener("click", copyCoords);
+$("#clearBtn").addEventListener("click", () => {
+  ["ix","iy","iz"].forEach(id => { $("#"+id).value = ""; });
+  $("#ix").focus();
+  update();
+});
 
 /* ---- ambient ember particles (canvas) ---- */
 (function particles(){
