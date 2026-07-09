@@ -58,6 +58,15 @@ body::before{
 }
 .wrap{position:relative; z-index:1; max-width:1140px; margin:0 auto; padding:26px 18px 60px}
 
+/* ---------- nav tabs ---------- */
+.tabs{display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap}
+.tab{font-family:var(--px); font-size:8px; letter-spacing:1px; text-decoration:none;
+  color:var(--dim); background:var(--panel); box-shadow:var(--bev-out); padding:12px 14px}
+.tab:hover{color:var(--ink); background:var(--panel2)}
+.tab.on{color:var(--glint); box-shadow:var(--bev-out), inset 0 -3px 0 var(--glint)}
+.tab:active{transform:translateY(1px)}
+.tab:focus-visible{outline:2px dashed var(--glint); outline-offset:2px}
+
 /* ---------- header ---------- */
 header{display:flex; align-items:center; gap:16px; margin-bottom:24px; flex-wrap:wrap}
 header .hslot{flex:none}
@@ -253,6 +262,11 @@ a{color:var(--glint)}
 <canvas id="particles" aria-hidden="true"></canvas>
 <div id="runes" aria-hidden="true"></div>
 <div class="wrap">
+
+<nav class="tabs" aria-label="Tools">
+  <a class="tab on" href="index.html" aria-current="page">ENCHANT ORDER</a>
+  <a class="tab" href="nether.html">NETHER TRAVEL</a>
+</nav>
 
 <header>
   <div class="slot glint hslot" id="headSlot"></div>
