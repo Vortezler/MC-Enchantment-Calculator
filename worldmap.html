@@ -342,7 +342,7 @@ function locate(q){
     if(!res){ $("#found").innerHTML='<span class="miss">No structure or biome matches “'+q+'”.</span>'; return; }
     if(!res.pos){ $("#found").innerHTML='<span class="miss">No '+res.label+' found near ('+fx+', '+fz+').</span>'; return; }
     const [x,z]=res.pos, dist=Math.round(Math.hypot(x-fx,z-fz));
-    MAP.centerOn(x,z, Math.min(MAP.state.zi,3)); MAP.highlightAt(x,z); renderChips();
+    MAP.centerOn(x,z, 6); MAP.highlightAt(x,z); renderChips();
     $("#found").innerHTML='Nearest <b>'+res.label+'</b>: <b>'+x+', '+z+'</b>  ·  ~'+dist.toLocaleString()+' blocks from ('+fx+', '+fz+')';
   }, 20);
 }
