@@ -140,12 +140,22 @@ select option{background:#0e1c14; color:var(--ink); font-weight:normal; padding:
 .maploading.gone{display:none}
 .chips{display:flex; flex-wrap:wrap; gap:6px}
 .chip{display:inline-flex; align-items:center; gap:7px; font-family:var(--mono); font-size:11.5px;
-  color:var(--dim); background:var(--panel2); box-shadow:var(--bev-out); padding:6px 10px; cursor:pointer; user-select:none}
-.chip .dot{width:9px; height:9px; box-shadow:inset 0 0 0 1px rgba(0,0,0,.6)}
-.chip.on{color:var(--ink)}
-.chip.on .dot{box-shadow:inset 0 0 0 1px rgba(0,0,0,.6), 0 0 6px currentColor}
-.chip:not(.on) .dot{opacity:.35}
+  color:var(--dim); background:var(--panel2); box-shadow:var(--bev-out); padding:5px 10px 5px 7px; cursor:pointer; user-select:none}
+.chip canvas{width:17px; height:17px; flex:none}
+.chip.on{color:var(--ink); background:#1b3526}
+.chip:not(.on) canvas{opacity:.35; filter:grayscale(.55)}
 .chip:focus-visible{outline:2px dashed var(--glint); outline-offset:2px}
+.seedrow{display:flex; gap:8px}
+.dice{font-size:17px; line-height:1; background:var(--panel2); border:0; box-shadow:var(--bev-out);
+  padding:0 13px; cursor:pointer; flex:none}
+.dice:hover{background:#173a28}
+.dice:active{transform:translateY(1px)}
+.dice:focus-visible{outline:2px dashed var(--glint); outline-offset:2px}
+.maptip{position:absolute; z-index:3; pointer-events:none; display:none; white-space:nowrap;
+  font-family:var(--mono); font-size:11px; color:var(--ink); background:rgba(8,14,10,.94);
+  box-shadow:var(--bev-out); padding:5px 9px}
+.maptip b{color:var(--glint)}
+#genpill{display:none; margin-left:auto; color:var(--glint)}
 .foundbar{margin-top:10px; min-height:1px; color:var(--dim); font-size:12.5px; line-height:1.5}
 .foundbar b{color:var(--glint)} .foundbar .miss{color:var(--gold)}
 .verify{display:block; text-align:center; text-decoration:none; margin-top:16px; font-size:12px;
@@ -181,7 +191,10 @@ a{color:var(--glint)}
 <div class="panel">
   <div class="p-head"><span class="p-title">World seed</span><span class="p-note" id="genStatus"></span></div>
   <label class="fld">SEED
-    <input id="seed" type="text" inputmode="text" placeholder="e.g.  -4172144997902289642  or  a text seed" aria-label="World seed">
+    <span class="seedrow">
+      <input id="seed" type="text" inputmode="text" placeholder="e.g.  -4172144997902289642  or  a text seed" aria-label="World seed">
+      <button class="dice" id="diceBtn" type="button" title="Random seed" aria-label="Random seed">🎲</button>
+    </span>
   </label>
   <div class="grid3" style="margin-top:14px; align-items:end">
     <div>
@@ -200,7 +213,9 @@ a{color:var(--glint)}
 
 <div class="mapwrap">
   <canvas id="map"></canvas>
-  <div class="maptop"><div class="readout" id="readout">Enter a seed and press Generate.</div></div>
+  <div class="maptop"><div class="readout" id="readout">Enter a seed and press Generate.</div>
+    <div class="readout" id="genpill">generating…</div></div>
+  <div class="maptip" id="maptip"></div>
   <div class="mapctrl">
     <button id="zin" title="Zoom in" aria-label="Zoom in">+</button>
     <button id="zout" title="Zoom out" aria-label="Zoom out">−</button>
@@ -301,12 +316,13 @@ function fromPoint(){
 }
 function renderChips(){
   if(!MAP) return;
-  const items = SPECIAL.concat(MAP.STRUCTS.map(s=>({key:s.key,label:s.label,col:s.col})));
+  const items = SPECIAL.concat(MAP.STRUCTS.map(s=>({key:s.key,label:s.label})));
   $("#chips").innerHTML = items.map(it =>
     '<span class="chip'+(MAP.isEnabled(it.key)?" on":"")+'" data-key="'+it.key+'" role="button" tabindex="0" aria-pressed="'+MAP.isEnabled(it.key)+'">'+
-    '<span class="dot" style="background:'+it.col+'; color:'+it.col+'"></span>'+it.label+'</span>').join("");
+    '<canvas width="20" height="20" data-icon="'+it.key+'" aria-hidden="true"></canvas>'+it.label+'</span>').join("");
+  document.querySelectorAll("#chips canvas").forEach(cv => MAP.drawIconInto(cv, cv.dataset.icon));
 }
-function toggleChip(c){ if(!c||!MAP)return; const on=!c.classList.contains("on"); MAP.setEnabled(c.dataset.key,on); c.classList.toggle("on",on); c.setAttribute("aria-pressed",on); }
+function toggleChip(c){ if(!c||!MAP)return; const on=!c.classList.contains("on"); MAP.setEnabled(c.dataset.key,on); c.classList.toggle("on",on); c.setAttribute("aria-pressed",on); persist(); }
 $("#chips").addEventListener("click", e=>toggleChip(e.target.closest(".chip")));
 $("#chips").addEventListener("keydown", e=>{ if(e.key===" "||e.key==="Enter"){ const c=e.target.closest(".chip"); if(c){ e.preventDefault(); toggleChip(c); } }});
 
@@ -319,15 +335,11 @@ function renderTargets(){
   if(!MAP){ $("#targets").innerHTML=""; return; }
   const q=$("#search").value.trim().toLowerCase();
   const list = targetRows().filter(t=> !q || (t.n+" "+(t.kw||"")).toLowerCase().includes(q));
-  let html;
-  if(list.length){
-    html = list.map(t=>'<div class="trow"><span class="tname">'+t.n+'</span><a class="locate" data-q="'+t.n.replace(/"/g,"")+'" href="#">LOCATE ▸</a></div>').join("");
-  } else if(q){
-    html = '<div class="trow"><span class="tname">Biome: '+q+'</span><a class="locate" data-q="'+q.replace(/"/g,"")+'" href="#">FIND ▸</a></div>';
-  } else {
-    html = '<div class="noresult">Search a structure or biome, then Locate the nearest one.</div>';
-  }
-  $("#targets").innerHTML = html;
+  const rows = list.map(t=>'<div class="trow"><span class="tname">'+t.n+'</span><a class="locate" data-q="'+t.n.replace(/"/g,"")+'" href="#">LOCATE ▸</a></div>');
+  if (q) for (const b of MAP.biomeSearch(q))
+    rows.push('<div class="trow"><span class="tname">'+b.name+'</span><span class="tcat">BIOME</span><a class="locate" data-q="'+b.name.replace(/"/g,"")+'" href="#">LOCATE ▸</a></div>');
+  $("#targets").innerHTML = rows.length ? rows.join("")
+    : '<div class="noresult">Nothing matches “'+q+'” — try a structure (village, monument…) or a biome (cherry grove, badlands…).</div>';
 }
 $("#targets").addEventListener("click", e=>{ const a=e.target.closest(".locate"); if(!a)return; e.preventDefault(); locate(a.dataset.q); });
 $("#search").addEventListener("input", renderTargets);
@@ -347,32 +359,65 @@ function locate(q){
   }, 20);
 }
 
+/* ---- persistence ---- */
+const STORE="worldmap_v1";
+function persist(){
+  try{ localStorage.setItem(STORE, JSON.stringify({
+    seed:$("#seed").value, edition, ver:$("#version").value,
+    px:$("#px").value, pz:$("#pz").value,
+    enabled: MAP ? [...MAP.state.enabled] : undefined
+  })); }catch(e){}
+}
+function restore(){
+  try{
+    const s=JSON.parse(localStorage.getItem(STORE)||"null"); if(!s) return null;
+    if(s.edition==="bedrock"){ edition="bedrock"; $("#edBedrock").classList.add("on"); $("#edJava").classList.remove("on"); renderVersions(); }
+    if(s.ver && [...$("#version").options].some(o=>o.value===s.ver)) $("#version").value=s.ver;
+    if(s.seed) $("#seed").value=s.seed;
+    if(s.px) $("#px").value=s.px;
+    if(s.pz) $("#pz").value=s.pz;
+    return s;
+  }catch(e){ return null; }
+}
+
 /* ---- generate + map controls ---- */
+/* text seeds hash via Java's String.hashCode, exactly like Minecraft */
+function normalizeSeed(raw){
+  raw=(raw||"").trim();
+  if(raw==="") return "0";
+  if(/^[+-]?\d+$/.test(raw)) return raw;
+  let h=0; for(let i=0;i<raw.length;i++) h=(Math.imul(31,h)+raw.charCodeAt(i))|0;
+  return String(h);
+}
 function updateGenLabel(){ const b=$("#genBtn"); if(b.disabled) return; b.textContent = edition==="java" ? "GENERATE ▸" : "OPEN CHUNKBASE ▸"; }
 function generate(){
   if(!MAP) return;
   if(edition!=="java"){ window.open(verifyUrl(),"_blank","noopener"); return; }
-  const seed=$("#seed").value.trim()||"0";
-  $("#genStatus").textContent="generating…";
+  const raw=$("#seed").value.trim(), seed=normalizeSeed(raw);
+  $("#genStatus").textContent = (seed!==raw && raw!=="") ? "text seed → "+seed : "";
+  persist();
   setTimeout(()=>{
     MAP.apply(mcId(), seed, 0);
-    $("#genStatus").textContent="";
     $("#found").innerHTML="";
     renderChips();
-    $("#readout").innerHTML='Drag to pan · scroll to zoom · hover to inspect';
   }, 20);
 }
 $("#genBtn").addEventListener("click", generate);
 $("#seed").addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); generate(); }});
+$("#diceBtn").addEventListener("click", ()=>{
+  const a=new Uint32Array(2); crypto.getRandomValues(a);
+  $("#seed").value = String((BigInt(a[0])<<32n | BigInt(a[1])) - (1n<<63n));
+  generate();
+});
 $("#zin").addEventListener("click", ()=>{ if(MAP) MAP.zoomIn(); });
 $("#zout").addEventListener("click", ()=>{ if(MAP) MAP.zoomOut(); });
 $("#goSpawn").addEventListener("click", ()=>{ if(MAP&&MAP.state.spawn) MAP.centerOn(MAP.state.spawn[0], MAP.state.spawn[1]); });
 
 /* ---- edition / version events ---- */
-$("#edJava").addEventListener("click", ()=>{ edition="java"; $("#edJava").classList.add("on"); $("#edBedrock").classList.remove("on"); renderVersions(); refreshVerify(); updateGenLabel(); });
-$("#edBedrock").addEventListener("click", ()=>{ edition="bedrock"; $("#edBedrock").classList.add("on"); $("#edJava").classList.remove("on"); renderVersions(); refreshVerify(); updateGenLabel(); });
-$("#version").addEventListener("change", refreshVerify);
-["seed","px","pz"].forEach(id => $("#"+id).addEventListener("input", refreshVerify));
+$("#edJava").addEventListener("click", ()=>{ edition="java"; $("#edJava").classList.add("on"); $("#edBedrock").classList.remove("on"); renderVersions(); refreshVerify(); updateGenLabel(); persist(); });
+$("#edBedrock").addEventListener("click", ()=>{ edition="bedrock"; $("#edBedrock").classList.add("on"); $("#edJava").classList.remove("on"); renderVersions(); refreshVerify(); updateGenLabel(); persist(); });
+$("#version").addEventListener("change", ()=>{ refreshVerify(); persist(); });
+["seed","px","pz"].forEach(id => $("#"+id).addEventListener("input", ()=>{ refreshVerify(); persist(); }));
 
 /* ---- ambient overworld particles ---- */
 (function particles(){
@@ -400,21 +445,40 @@ $("#version").addEventListener("change", refreshVerify);
 
 /* boot */
 renderVersions();
+const SAVED = restore();
 refreshVerify();
+
+let hovering=false;
+function idleReadout(st){
+  if (hovering) return;
+  const hint = st.markersGated ? '  ·  zoom in to reveal structures' : '';
+  $("#readout").innerHTML = 'X <b>'+Math.round(st.cx)+'</b>  Z <b>'+Math.round(st.cz)+'</b>'+hint;
+}
 
 CubiomesModule().then(M => {
   MAP = window.initMcMap({
     module: M,
     canvas: $("#map"),
     onHover(info){
-      const r=$("#readout");
-      if(!info){ r.innerHTML='Drag to pan · scroll to zoom · hover to inspect'; return; }
-      r.innerHTML = 'X <b>'+info.x+'</b>  Z <b>'+info.z+'</b>  ·  '+info.biome + (info.marker ? ('  ·  '+info.marker.label) : '');
-    }
+      const tip=$("#maptip"), r=$("#readout");
+      if(!info){ hovering=false; tip.style.display="none"; idleReadout(MAP.state); return; }
+      hovering=true;
+      r.innerHTML = 'X <b>'+info.x+'</b>  Z <b>'+info.z+'</b>  ·  '+info.biome;
+      if (info.marker){
+        tip.innerHTML = '<b>'+info.marker.label+'</b> '+info.marker.x+', '+info.marker.z;
+        tip.style.display="block";
+        const wrap=$(".mapwrap").getBoundingClientRect();
+        let tx=info.marker.px+14, ty=info.marker.py-10;
+        tip.style.left=Math.min(tx, wrap.width-tip.offsetWidth-8)+"px";
+        tip.style.top=Math.max(6, Math.min(ty, wrap.height-30))+"px";
+      } else tip.style.display="none";
+    },
+    onRender(st){ idleReadout(st); },
+    onStatus(busy){ $("#genpill").style.display = busy ? "block" : "none"; }
   });
+  if (SAVED && Array.isArray(SAVED.enabled) && SAVED.enabled.length) MAP.setEnabledMany(SAVED.enabled);
   $("#maploading").classList.add("gone");
   $("#genBtn").disabled=false; updateGenLabel();
-  $("#genStatus").textContent="engine ready";
   renderChips();
   renderTargets();
   if(!$("#seed").value.trim()) $("#seed").value="0";
